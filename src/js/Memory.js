@@ -7,7 +7,7 @@ export default class Memory {
     //this._username = username;
     this._first = null;
     this._second = null;
-    this._turned = 0;
+    //this._turned = 0;
     this._ref = this.init();
     //this.init();
     this.fetchIcons();
@@ -90,19 +90,21 @@ export default class Memory {
       }
     });
   }
+  cardReset() {
+    this._first = null;
+    this._second = null;
+  }
   checkCards() {
     if (this._first._icon === this._second._icon) {
-      this._first; //.block();
-      this._second; //.block();
-      //this._first = null;
-      //this._second = null;
-      this._turned++;
+      this._first.block();
+      this._second.block();
+      this.cardReset();
+      //this._turned++;
       //if (this._turned === Math.pow(2, this._lvl));
     } else {
       this._first.flipBack();
       this._second.flipBack();
-      this._first = null;
-      this._second = null;
+      this.cardReset();
     }
   }
 }

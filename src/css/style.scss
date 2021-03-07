@@ -38,12 +38,14 @@ body {
     font-size: 32px;
     margin: 15px;
     perspective: 1000px;
+    transition: all 1s;
+    cursor: pointer;
+
     .flipdiv {
       width: 100%;
       height: 100%;
       transition: transform 1s;
       transform-style: preserve-3d;
-      cursor: pointer;
       position: relative;
     }
 

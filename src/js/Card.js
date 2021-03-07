@@ -44,10 +44,8 @@ export default class Card {
   };
   block = () => {
     setTimeout(() => {
-      this._ref.style.opacity = 0.2;
-    }, 2000);
-    //window.addEventListener("flipped", (e) => {
-    //this._ref.classList.add("block");
-    //});
+      this._ref.style.opacity = 0.6;
+      this._ref.style.cursor = "not-allowed";
+    }, 1300);
   };
 }
