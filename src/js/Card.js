@@ -11,18 +11,20 @@ export default class Card {
     this._holder.insertAdjacentHTML(
       "beforeend",
       `
-      <div class="scene">
+      
       <div class="card">
+      <div class="flipdiv">
             <div class="card__face card__face--front"></div>
             <div class="card__face card__face--back">
               <svg class="icon icon-${this._icon}">
                 <use xlink:href="./icons/symbol-defs.svg#icon-${this._icon}"></use>
               </svg>
-            </div>    
+            </div>   
+            </div>  
             </div> 
         `
     );
-    return this._holder.querySelector(".scene:last-child .card:last-child");
+    return document.querySelector(".card:last-child");
   }
   setUpEvents() {
     this._ref.onclick = this.flip;
@@ -34,9 +36,18 @@ export default class Card {
       dispatchEvent(this._flippedEvent);
     }
   };
+  flipBack = () => {
+    setTimeout(() => {
+      this._ref.classList.remove("flipped");
+      this._flipped = false;
+    }, 1000);
+  };
   block = () => {
-    window.addEventListener("flipped", (e) => {
-      this._ref.classList.add("block");
-    });
+    setTimeout(() => {
+      this._ref.style.opacity = 0.2;
+    }, 2000);
+    //window.addEventListener("flipped", (e) => {
+    //this._ref.classList.add("block");
+    //});
   };
 }

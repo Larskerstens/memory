@@ -1,33 +1,17 @@
-/* "pencil",
-"home",
-"quill",
-"blog",
-"leaf",
-"office",
-"newspaper",
-"eyedropper",
-"droplet",
-"image",
-"camera",
-"headphones",
-"music",
-"play",
-"film",
-"dice", */
-
 import Card from "./Card";
 
 export default class Memory {
-  constructor(lvl = 4) {
+  constructor(lvl = 1) {
     this._allIcons = [];
     this._lvl = lvl;
     //this._username = username;
-    //this._first = null;
-    //this._second = null;
-    //this._selected = ["leaf"];
-    this._turned = [];
-    this.init();
+    this._first = null;
+    this._second = null;
+    this._turned = 0;
+    this._ref = this.init();
+    //this.init();
     this.fetchIcons();
+    this.setUpEvents();
     /* if (localStorage.getItem("local")) {
       const persistedData = JSON.parse(localStorage.getItem("local"));
       this._lvl = persistedData.lvl;
@@ -37,7 +21,6 @@ export default class Memory {
     } else {
       this.fetchIcons();
     } */
-    //setUpEvents => luisteren naar flipped eventTypes
   }
   /* saveToPersist() {
     localStorage.setItem(
@@ -53,14 +36,16 @@ export default class Memory {
       .then((response) => response.json())
       .then((data) => {
         this._allIcons = data.icons.map((el) => el.properties.name);
-        this.init();
+        this.startLevel();
       })
       .catch((error) => console.log(error));
   }
   init() {
     //initiele html opbouwen (<div id="grid"></div>)
-    this.setUpEvents();
-    this.startLevel();
+    document
+      .querySelector(".memory")
+      .insertAdjacentHTML("afterbegin", `<div class="scene"></div>`);
+    return document.querySelector(".scene");
   }
   startLevel = () => {
     // op basis van levelnr
@@ -77,18 +62,8 @@ export default class Memory {
     //const shuffeld = shuffle(allekaarten);
     //x aantal Card plaatsen in #grid
     allekaarten.map((e) => {
-      new Card(document.querySelector(".memory"), e);
+      new Card(this._ref, e);
     });
-
-    /* new Card(document.querySelector(".memory"), "home");
-    new Card(document.querySelector(".memory"), "pencil");
-    new Card(document.querySelector(".memory"), "office");
-    new Card(document.querySelector(".memory"), "newspaper"); */
-
-    //op basis van levelNr aantal unieke items uit array halen
-    //new Card(".grid", "pencil||home||gear||tree||leaf");
-
-    //allCards.shuffle()
   };
 
   shuffle = (array) => {
@@ -107,33 +82,27 @@ export default class Memory {
   };
   setUpEvents() {
     window.addEventListener("flipped", (e) => {
-      const flippedCard = e.detail;
-      //console.log(e.detail);
-      console.log(this._turned);
-      this._turned.push(flippedCard);
-      if (this._turned.length === 2) {
-        if (this._turned[0]._icon === this._turned[1]._icon) {
-          // match
-          this._ref.classList.add("match");
-          this._isFlipped = true;
-          this._ref.block();
-          setInterval(() => {
-            this._turned[0];
-            this._turned[1];
-            this._turned = [];
-          }, 1000);
-        } else {
-          // no match
-          this._ref.classList.add("nomatch");
-          this._ref.classList.remove("flipped");
-          this._isFlipped = false;
-          setInterval(() => {
-            this._turned[0];
-            this._turned[1];
-            this._turned = [];
-          }, 1000);
-        }
+      if (!this._first) {
+        this._first = e.detail;
+      } else {
+        this._second = e.detail;
+        this.checkCards();
       }
     });
+  }
+  checkCards() {
+    if (this._first._icon === this._second._icon) {
+      this._first; //.block();
+      this._second; //.block();
+      //this._first = null;
+      //this._second = null;
+      this._turned++;
+      //if (this._turned === Math.pow(2, this._lvl));
+    } else {
+      this._first.flipBack();
+      this._second.flipBack();
+      this._first = null;
+      this._second = null;
+    }
   }
 }
