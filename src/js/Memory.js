@@ -7,8 +7,7 @@ export default class Memory {
     //this._username = username;
     this._first = null;
     this._second = null;
-    //this._turned = 0;
-    this._ref = this.init();
+    this._turned = 0;
     //this.init();
     this.fetchIcons();
     this.setUpEvents();
@@ -48,6 +47,7 @@ export default class Memory {
     return document.querySelector(".scene");
   }
   startLevel = () => {
+    this._ref = this.init();
     // op basis van levelnr
     //     1 => 2unieke => 4
     // 2 => 4unieke => 8
@@ -99,12 +99,24 @@ export default class Memory {
       this._first.block();
       this._second.block();
       this.cardReset();
-      //this._turned++;
-      //if (this._turned === Math.pow(2, this._lvl));
+      this._turned++;
+      if (this._turned === Math.pow(2, this._lvl)) {
+        setTimeout(() => {
+          alert("Nice you won! click ok for level 2!");
+          this.startNextLvl();
+        }, 3000);
+      }
     } else {
       this._first.flipBack();
       this._second.flipBack();
       this.cardReset();
     }
   }
+  startNextLvl = () => {
+    document.querySelector(".memory").innerHTML = "";
+    this._lvl++;
+    this._turned = 0;
+    this.startLevel();
+    console.log(this._lvl);
+  };
 }
